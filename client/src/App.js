@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import './App.css';
-import Question from './Question';
+import Game from './Game';
 
 function App() {
   return (
     <Fragment>
       <h1>Millionaires</h1>
-      <Question />
+      <Game />
     </Fragment>
   );
 }

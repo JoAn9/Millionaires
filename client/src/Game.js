@@ -1,11 +1,12 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Question() {
+function Game() {
   const [questionData, setQuestionData] = useState({
     question: '',
     answers: [],
   });
+  const [goodAns, setGoodAnswers] = useState('');
 
   const { question, answers } = questionData;
 
@@ -25,8 +26,17 @@ function Question() {
     fetchQuestion();
   }, []);
 
-  const sendAnswer = ans => {
-    axios.post(`/answer/${ans}`);
+  const handleAnswersFeedback = data => {
+    console.log(data);
+    setGoodAnswers(data);
+  };
+
+  const sendAnswer = async ans => {
+    const res = await axios.post(`/answer/${ans}`);
+    const {
+      data: { goodAnswers },
+    } = res;
+    handleAnswersFeedback(goodAnswers);
   };
 
   return (
@@ -34,6 +44,7 @@ function Question() {
       <h2>
         Question<span></span>
       </h2>
+      <h3>Good answers: {goodAns}</h3>
       <h3>{question}</h3>
       {answers?.map((item, index) => (
         <button key={index} onClick={() => sendAnswer(index)}>
@@ -44,4 +55,4 @@ function Question() {
   );
 }
 
-export default Question;
+export default Game;
