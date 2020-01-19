@@ -16,7 +16,7 @@ function gameRoutes(app) {
   ];
 
   app.get('/question', (req, res) => {
-    if (goodAnswers === questions.length + 1) {
+    if (goodAnswers === questions.length) {
       res.json({
         winner: true,
       });
@@ -36,6 +36,11 @@ function gameRoutes(app) {
     const { index } = req.params;
     const isCorrect = Number(index) === questions[goodAnswers].correctAnswer;
 
+    if (isGameOver) {
+      res.json({
+        loser: true,
+      });
+    }
     if (isCorrect) {
       goodAnswers++;
     } else {
