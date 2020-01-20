@@ -49,8 +49,9 @@ function Game() {
   };
 
   const callToAFriend = async () => {
-    const res = axios.post('/help/friend');
-    console.log(await res);
+    const res = axios.get('/help/friend');
+    const { data } = await res;
+    console.log(data);
   };
 
   return (

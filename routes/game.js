@@ -59,10 +59,23 @@ function gameRoutes(app) {
     });
   });
 
-  app.post('/help/friend', (req, res) => {
+  app.get('/help/friend', (req, res) => {
+    if (callToAFriendUsed) {
+      return res.json({
+        text: 'Lifebet alredy used',
+      });
+    }
+
+    const friendKnowsAnswer = Math.random() < 0.5;
+    const question = questions[goodAnswers];
+    const answer = question.answers[question.correctAnswer];
+
     res.json({
-      text: "Hmm, I don't know",
+      text: friendKnowsAnswer
+        ? `Hmm, I\'m not sure, but I think that answer is ${answer}`
+        : "Hmm, I don't know...",
     });
+    callToAFriendUsed = true;
   });
 }
 
