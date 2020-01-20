@@ -2,15 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Game() {
-  const [questionData, setQuestionData] = useState({
-    question: '',
-    answers: [],
-  });
+  const [question, setQuestion] = useState('');
+  const [answers, setAnswers] = useState([]);
+
   const [goodAns, setGoodAnswers] = useState('');
   const [gameOver, setGameOver] = useState('');
-  const [tipFromFriend, setTipFromFriend] = useState('');
-
-  const { question, answers } = questionData;
+  const [tip, setTip] = useState('');
 
   useEffect(() => {
     fetchQuestion();
@@ -29,7 +26,8 @@ function Game() {
       if (loser) {
         setGameOver('YOU LOST, SORRY :(');
       }
-      setQuestionData({ question, answers });
+      setQuestion(question);
+      setAnswers(answers);
     } catch (err) {
       console.log(err);
     }
@@ -50,23 +48,29 @@ function Game() {
   };
 
   const phoneAFriend = async () => {
+    setTip('');
     const res = axios.get('/help/friend');
     const {
       data: { text },
     } = await res;
     console.log(text);
-    setTipFromFriend(text);
+    setTip(text);
   };
 
   const fiftyFifty = async () => {
+    setTip('');
     const res = axios.get('/help/fifty');
     const {
-      data: { wrongAnswers },
+      data: { wrongAnswers, text },
     } = await res;
-    console.log(wrongAnswers);
-    // setTipFromFriend(text);
+    if (wrongAnswers) {
+      console.log(wrongAnswers);
+    }
+    if (text) {
+      setTip(text);
+    }
   };
-
+  console.log(answers);
   return (
     <Fragment>
       <h2>
@@ -83,7 +87,7 @@ function Game() {
       <button onClick={phoneAFriend}>Phone a Friend</button>
       <button onClick={fiftyFifty}>Fifty-Fifty</button>
       <button>Ask the Audience</button>
-      {tipFromFriend && <h2>{tipFromFriend}</h2>}
+      {tip && <h2>{tip}</h2>}
     </Fragment>
   );
 }
