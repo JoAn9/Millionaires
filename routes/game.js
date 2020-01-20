@@ -1,6 +1,7 @@
 function gameRoutes(app) {
   let goodAnswers = 0;
   let isGameOver = false;
+  let callToAFriendUsed = false;
 
   const questions = [
     {
@@ -12,6 +13,11 @@ function gameRoutes(app) {
       question: 'What would you like to drink?',
       answers: ['Water please', 'Nothing', 'Orange juice', 'Glass of wine'],
       correctAnswer: 3,
+    },
+    {
+      question: 'Pizza?',
+      answers: ['Even two', 'No thanks', 'I prefer broccoli', ' I am on diet'],
+      correctAnswer: 0,
     },
   ];
 
@@ -50,6 +56,12 @@ function gameRoutes(app) {
     res.json({
       correct: isCorrect,
       goodAnswers,
+    });
+  });
+
+  app.post('/help/friend', (req, res) => {
+    res.json({
+      text: "Hmm, I don't know",
     });
   });
 }

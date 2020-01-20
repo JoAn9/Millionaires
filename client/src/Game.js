@@ -7,28 +7,37 @@ function Game() {
     answers: [],
   });
   const [goodAns, setGoodAnswers] = useState('');
+  const [gameOver, setGameOver] = useState('');
 
   const { question, answers } = questionData;
 
   useEffect(() => {
-    async function fetchQuestion() {
-      try {
-        const res = await axios.get('/question');
-        console.log(res);
-        const {
-          data: { question, answers },
-        } = res;
-        setQuestionData({ question, answers });
-      } catch (err) {
-        console.log(err);
-      }
-    }
     fetchQuestion();
   }, []);
+
+  const fetchQuestion = async () => {
+    try {
+      const res = await axios.get('/question');
+      console.log(res);
+      const {
+        data: { question, answers, winner, loser },
+      } = res;
+      if (winner) {
+        setGameOver('WE ARE THE CHAMPIONS!!!');
+      }
+      if (loser) {
+        setGameOver('YOU LOST, SORRY :(');
+      }
+      setQuestionData({ question, answers });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleAnswersFeedback = data => {
     console.log(data);
     setGoodAnswers(data);
+    fetchQuestion();
   };
 
   const sendAnswer = async ans => {
@@ -37,6 +46,11 @@ function Game() {
       data: { goodAnswers },
     } = res;
     handleAnswersFeedback(goodAnswers);
+  };
+
+  const callToAFriend = async () => {
+    const res = axios.post('/help/friend');
+    console.log(await res);
   };
 
   return (
@@ -51,6 +65,8 @@ function Game() {
           {item}
         </button>
       ))}
+      <h3>{gameOver}</h3>
+      <button onClick={callToAFriend}>Call a friend</button>
     </Fragment>
   );
 }
