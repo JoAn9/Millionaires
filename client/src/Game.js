@@ -8,6 +8,7 @@ function Game() {
   });
   const [goodAns, setGoodAnswers] = useState('');
   const [gameOver, setGameOver] = useState('');
+  const [tipFromFriend, setTipFromFriend] = useState('');
 
   const { question, answers } = questionData;
 
@@ -50,8 +51,11 @@ function Game() {
 
   const callToAFriend = async () => {
     const res = axios.get('/help/friend');
-    const { data } = await res;
-    console.log(data);
+    const {
+      data: { text },
+    } = await res;
+    console.log(text);
+    setTipFromFriend(text);
   };
 
   return (
@@ -68,6 +72,7 @@ function Game() {
       ))}
       <h3>{gameOver}</h3>
       <button onClick={callToAFriend}>Call a friend</button>
+      {tipFromFriend && <h2>{tipFromFriend}</h2>}
     </Fragment>
   );
 }
