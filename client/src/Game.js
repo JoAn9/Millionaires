@@ -49,13 +49,22 @@ function Game() {
     handleAnswersFeedback(goodAnswers);
   };
 
-  const callToAFriend = async () => {
+  const phoneAFriend = async () => {
     const res = axios.get('/help/friend');
     const {
       data: { text },
     } = await res;
     console.log(text);
     setTipFromFriend(text);
+  };
+
+  const fiftyFifty = async () => {
+    const res = axios.get('/help/fifty');
+    const {
+      data: { wrongAnswers },
+    } = await res;
+    console.log(wrongAnswers);
+    // setTipFromFriend(text);
   };
 
   return (
@@ -71,7 +80,9 @@ function Game() {
         </button>
       ))}
       <h3>{gameOver}</h3>
-      <button onClick={callToAFriend}>Call a friend</button>
+      <button onClick={phoneAFriend}>Phone a Friend</button>
+      <button onClick={fiftyFifty}>Fifty-Fifty</button>
+      <button>Ask the Audience</button>
       {tipFromFriend && <h2>{tipFromFriend}</h2>}
     </Fragment>
   );

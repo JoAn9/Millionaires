@@ -1,7 +1,8 @@
 function gameRoutes(app) {
   let goodAnswers = 0;
   let isGameOver = false;
-  let callToAFriendUsed = false;
+  let phoneAFriendUsed = false;
+  let fiftyFiftyUsed = false;
 
   const questions = [
     {
@@ -60,9 +61,9 @@ function gameRoutes(app) {
   });
 
   app.get('/help/friend', (req, res) => {
-    if (callToAFriendUsed) {
+    if (phoneAFriendUsed) {
       return res.json({
-        text: 'Lifebet alredy used',
+        text: 'Lifeline "Phone a friend" alredy used',
       });
     }
 
@@ -75,7 +76,28 @@ function gameRoutes(app) {
         ? `Hmm, I\'m not sure, but I think that answer is ${answer}`
         : "Hmm, I don't know...",
     });
-    callToAFriendUsed = true;
+    phoneAFriendUsed = true;
+  });
+
+  app.get('/help/fifty', (req, res) => {
+    if (fiftyFiftyUsed) {
+      return res.json({
+        text: 'Lifeline "Fifty-fifty" alredy used',
+      });
+    }
+    const question = questions[goodAnswers];
+    const wrongAnswers = question.answers.filter(
+      (item, index) => index !== question.correctAnswer
+    );
+    const randomIndex = ~~(Math.random() * wrongAnswers.length);
+
+    wrongAnswers.splice(randomIndex, 1);
+
+    res.json({
+      wrongAnswers,
+    });
+
+    fiftyFiftyUsed = true;
   });
 }
 
