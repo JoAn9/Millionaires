@@ -34,7 +34,6 @@ function Game() {
   };
 
   const handleAnswersFeedback = data => {
-    console.log(data);
     setGoodAnswers(data);
     fetchQuestion();
   };
@@ -53,7 +52,6 @@ function Game() {
     const {
       data: { text },
     } = await res;
-    console.log(text);
     setTip(text);
   };
 
@@ -64,13 +62,20 @@ function Game() {
       data: { wrongAnswers, text },
     } = await res;
     if (wrongAnswers) {
-      console.log(wrongAnswers);
+      let answersFifty = [];
+      for (const ans of answers) {
+        if (wrongAnswers.includes(ans)) {
+          answersFifty.push('--');
+        } else {
+          answersFifty.push(ans);
+        }
+      }
+      setAnswers(answersFifty);
     }
     if (text) {
       setTip(text);
     }
   };
-  console.log(answers);
   return (
     <Fragment>
       <h2>
