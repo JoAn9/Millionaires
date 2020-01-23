@@ -3,6 +3,7 @@ function gameRoutes(app) {
   let isGameOver = false;
   let phoneAFriendUsed = false;
   let fiftyFiftyUsed = false;
+  let askAudienceUsed = false;
 
   const questions = [
     {
@@ -98,6 +99,26 @@ function gameRoutes(app) {
     });
 
     fiftyFiftyUsed = true;
+  });
+
+  app.get('/help/audience', (req, res) => {
+    if (askAudienceUsed) {
+      return res.json({
+        text: 'Lifeline "Ask the Audience" alredy used',
+      });
+    }
+    const results = [10, 20, 34, 36];
+    for (let i = results.length - 1; i > 0; i--) {
+      const randomNumber = Math.floor(Math.random() * 20 - 10);
+      results[i] += randomNumber;
+      results[i - 1] -= randomNumber;
+    }
+    const correctAnswer = questions[goodAnswers].correctAnswer;
+
+    [results[correctAnswer], results[3]] = [results[3], results[correctAnswer]];
+
+    res.json({ results });
+    askAudienceUsed = true;
   });
 }
 
