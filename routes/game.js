@@ -107,7 +107,7 @@ function gameRoutes(app) {
         text: 'Lifeline "Ask the Audience" alredy used',
       });
     }
-    const results = [10, 20, 34, 36];
+    const results = [10, 20, 32, 38];
     for (let i = results.length - 1; i > 0; i--) {
       const randomNumber = Math.floor(Math.random() * 20 - 10);
       results[i] += randomNumber;
