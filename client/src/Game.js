@@ -4,6 +4,8 @@ import axios from 'axios';
 function Game() {
   const [question, setQuestion] = useState('');
   const [answers, setAnswers] = useState([]);
+  const [answersWithPercentages, setAnswersWithPercentages] = useState([]);
+  const [allAnswers, setAllAnswers] = useState([]);
 
   const [goodAns, setGoodAnswers] = useState('');
   const [gameOver, setGameOver] = useState('');
@@ -16,7 +18,6 @@ function Game() {
   const fetchQuestion = async () => {
     try {
       const res = await axios.get('/question');
-      console.log(res);
       const {
         data: { question, answers, winner, loser },
       } = res;
@@ -26,8 +27,11 @@ function Game() {
       if (loser) {
         setGameOver('YOU LOST, SORRY :(');
       }
+      setTip('');
       setQuestion(question);
       setAnswers(answers);
+      setAllAnswers(answers);
+      setAnswersWithPercentages([]);
     } catch (err) {
       console.log(err);
     }
@@ -76,6 +80,26 @@ function Game() {
       setTip(text);
     }
   };
+
+  // @todo: nice chart
+  const askAudience = async () => {
+    setTip('');
+    const res = await axios.get('/help/audience');
+    const {
+      data: { results, text },
+    } = res;
+    if (text) {
+      return setTip(text);
+    }
+    const answersWithAudience = [];
+
+    allAnswers.forEach((item, i) => {
+      answersWithAudience.push(`${item}: ${results[i]}%`);
+    });
+
+    setAnswersWithPercentages(answersWithAudience);
+  };
+  // @todo: block buttons after win & defeat
   return (
     <Fragment>
       <h2>
@@ -88,10 +112,13 @@ function Game() {
           {item}
         </button>
       ))}
+      {answersWithPercentages?.map(item => (
+        <p key={item}>{item} </p>
+      ))}
       <h3>{gameOver}</h3>
       <button onClick={phoneAFriend}>Phone a Friend</button>
       <button onClick={fiftyFifty}>Fifty-Fifty</button>
-      <button>Ask the Audience</button>
+      <button onClick={askAudience}>Ask the Audience</button>
       {tip && <h2>{tip}</h2>}
     </Fragment>
   );
