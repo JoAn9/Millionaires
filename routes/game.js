@@ -74,7 +74,7 @@ function gameRoutes(app) {
 
     res.json({
       text: friendKnowsAnswer
-        ? `Hmm, I\'m not sure, but I think that answer is ${answer}`
+        ? `Hmm, I\'m not sure, but I think the answer is ${answer}`
         : "Hmm, I don't know...",
     });
     phoneAFriendUsed = true;
