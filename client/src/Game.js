@@ -23,7 +23,7 @@ function Game() {
         data: { question, answers, winner, loser },
       } = res;
       if (winner) {
-        setGameOver('WE ARE THE CHAMPIONS!!!');
+        setGameOver('YOU ARE THE WINNER!!!');
       }
       if (loser) {
         setGameOver('YOU LOST, SORRY :(');
@@ -52,6 +52,7 @@ function Game() {
   };
 
   const phoneAFriend = async () => {
+    if (gameOver) return;
     setTip('');
     const res = axios.get('/help/friend');
     const {
@@ -61,6 +62,7 @@ function Game() {
   };
 
   const fiftyFifty = async () => {
+    if (gameOver) return;
     setTip('');
     const res = axios.get('/help/fifty');
     const {
@@ -83,6 +85,7 @@ function Game() {
   };
 
   const askAudience = async () => {
+    if (gameOver) return;
     setTip('');
     const res = await axios.get('/help/audience');
     const {
@@ -98,7 +101,7 @@ function Game() {
     });
     setData(answersWithAudience);
   };
-  // @todo: block buttons after win & defeat
+
   return (
     <Fragment>
       <h2>
