@@ -32,7 +32,7 @@ const renderCustomizedLabel = ({
 
 function ChartAudience({ data }) {
   return (
-    <PieChart width={400} height={400}>
+    <PieChart width={400} height={400} className="chart">
       <Pie
         data={data}
         cx={200}
