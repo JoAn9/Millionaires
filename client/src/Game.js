@@ -1,11 +1,12 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
+import ChartAudience from './ChartAudience';
 
 function Game() {
   const [question, setQuestion] = useState('');
   const [answers, setAnswers] = useState([]);
-  const [answersWithPercentages, setAnswersWithPercentages] = useState([]);
   const [allAnswers, setAllAnswers] = useState([]);
+  const [data, setData] = useState([]);
 
   const [goodAns, setGoodAnswers] = useState('');
   const [gameOver, setGameOver] = useState('');
@@ -31,7 +32,7 @@ function Game() {
       setQuestion(question);
       setAnswers(answers);
       setAllAnswers(answers);
-      setAnswersWithPercentages([]);
+      setData([]);
     } catch (err) {
       console.log(err);
     }
@@ -81,7 +82,6 @@ function Game() {
     }
   };
 
-  // @todo: nice chart
   const askAudience = async () => {
     setTip('');
     const res = await axios.get('/help/audience');
@@ -94,10 +94,9 @@ function Game() {
     const answersWithAudience = [];
 
     allAnswers.forEach((item, i) => {
-      answersWithAudience.push(`${item}: ${results[i]}%`);
+      answersWithAudience.push({ name: item, value: results[i] });
     });
-
-    setAnswersWithPercentages(answersWithAudience);
+    setData(answersWithAudience);
   };
   // @todo: block buttons after win & defeat
   return (
@@ -112,9 +111,7 @@ function Game() {
           {item}
         </button>
       ))}
-      {answersWithPercentages?.map(item => (
-        <p key={item}>{item} </p>
-      ))}
+      {data.length > 0 && <ChartAudience data={data} />}
       <h3>{gameOver}</h3>
       <button onClick={phoneAFriend}>Phone a Friend</button>
       <button onClick={fiftyFifty}>Fifty-Fifty</button>
