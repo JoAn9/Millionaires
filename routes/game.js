@@ -64,7 +64,7 @@ function gameRoutes(app) {
   app.get('/help/friend', (req, res) => {
     if (phoneAFriendUsed) {
       return res.json({
-        text: 'Lifeline "Phone a friend" alredy used',
+        text: 'Lifeline "Phone a friend" already used',
       });
     }
 
@@ -83,7 +83,7 @@ function gameRoutes(app) {
   app.get('/help/fifty', (req, res) => {
     if (fiftyFiftyUsed) {
       return res.json({
-        text: 'Lifeline "Fifty-fifty" alredy used',
+        text: 'Lifeline "Fifty-fifty" already used',
       });
     }
     const question = questions[goodAnswers];
@@ -104,7 +104,7 @@ function gameRoutes(app) {
   app.get('/help/audience', (req, res) => {
     if (askAudienceUsed) {
       return res.json({
-        text: 'Lifeline "Ask the Audience" alredy used',
+        text: 'Lifeline "Ask the Audience" already used',
       });
     }
     const results = [10, 20, 32, 38];
