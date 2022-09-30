@@ -14,7 +14,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "recharts": "^2.0.0-beta.1"
+    "recharts": "^2.1.14"
   },
   "devDependencies": {
     "concurrently": "^5.0.2"
